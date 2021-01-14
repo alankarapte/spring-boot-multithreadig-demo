@@ -56,7 +56,12 @@ public class UserService {
 		return CompletableFuture.completedFuture(users); //Returns a new CompletableFuture that is already completed withthe given value
 	}
 	
-	
+	@Async
+	public CompletableFuture<List<User>> findAllUser(){
+		logger.info("Get list of user by {} ", Thread.currentThread().getName());
+		List<User> users = userRepository.findAll();
+		return CompletableFuture.completedFuture(users);
+	}
 
 	/**
 	 * This is utility method which will parse our CSV file
