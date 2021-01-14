@@ -52,5 +52,18 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
 
+	/**
+	 * Here we using return type as CompletableFuture
+	 * 
+	 * @return
+	 */
+	@GetMapping(value = "/users", 	//no need of 'consumes' cause its get request
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	public CompletableFuture<ResponseEntity> findAllUsers(){
+
+		return userService.findAllUser().thenApply( ResponseEntity::ok );	//similar as above one
+//		return userService.findAllUser().thenApply( data ->{ return ResponseEntity.ok(data); } ); 
+	}
+
 	
 }
