@@ -28,7 +28,35 @@ public class UserService {
 
 	Logger logger = LoggerFactory.getLogger(UserService.class);
 
+	/**
+	 * Csv file which I have created contain 500 records so it takes time time to save all
+	 * So we are printing start & end time
+	 * we are also printing 'users.size()' & 'Thread.currentThread().getName()'
+	 * 
+	 * 
+	 * Method to read CSV file & make it as an object to persistent in DB
+	 * 
+	 * We are getting data from CSV file so that parameter is MultipartFile
+	 * 
+	 */
+	@Async
+	public CompletableFuture<List<User>> saveUser(MultipartFile multipartFile) throws Exception {
+		long startTime = System.currentTimeMillis(); //taking start/end to measure time to execute
 
+		List<User> users = parseCsv(multipartFile);
+		
+		logger.info("saving list of user of size {} {} ", users.size(), Thread.currentThread().getName() );
+		
+		users = userRepository.saveAll(users); //
+		
+		long endTime = System.currentTimeMillis(); //taking start/end to measure time to execute
+		
+		logger.info("Total time to save all users: {} ", (endTime - startTime));	//print time to save all records
+		
+		return CompletableFuture.completedFuture(users); //Returns a new CompletableFuture that is already completed withthe given value
+	}
+	
+	
 
 	/**
 	 * This is utility method which will parse our CSV file
