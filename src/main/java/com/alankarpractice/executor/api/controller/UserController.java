@@ -1,6 +1,7 @@
 package com.alankarpractice.executor.api.controller;
 
 import java.util.Iterator;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
+import com.alankarpractice.executor.api.entity.User;
 import com.alankarpractice.executor.api.service.UserService;
 
 @RestController
@@ -63,6 +65,18 @@ public class UserController {
 
 		return userService.findAllUser().thenApply( ResponseEntity::ok );	//similar as above one
 //		return userService.findAllUser().thenApply( data ->{ return ResponseEntity.ok(data); } ); 
+	}
+	
+	@GetMapping(value = "/allUsersByMultiThread")
+	public ResponseEntity<?> findAllUsersByMultiThread(){
+		
+		CompletableFuture<List<User>> users1 = userService.findAllUser();
+		CompletableFuture<List<User>> users2 = userService.findAllUser();
+		CompletableFuture<List<User>> users3 = userService.findAllUser();
+
+		CompletableFuture.allOf(users1, users2, users3).join();
+		
+		return ResponseEntity.ok(HttpStatus.OK);
 	}
 
 	

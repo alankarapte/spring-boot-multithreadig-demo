@@ -53,6 +53,17 @@ public class AsyncConfig{}
 
 3. you can follow implimentation of 'UserController's findAllUser(..) method 
 
+4. VVIP step which will actually demonstrate multithreading - implimentation of 'UserController's findAllUsersByMultiThread(..) method
+	-call '/allUsersByMultiThread' endpoint and observe the logs 
+	-we have already configure thread pool capacity = 2
+	-and we are calling  'userService.findAllUser()' method 3 time here
+	-so it get execute parallelly by that two threads
+	-so on logs we are printing thread name so 
+output on log will be like below :-
+2021-01-15 15:40:16.702  INFO 22300 --- [   userThread-2] c.a.executor.api.service.UserService     : Get list of user by userThread-2 
+2021-01-15 15:40:16.702  INFO 22300 --- [   userThread-2] c.a.executor.api.service.UserService     : Get list of user by userThread-1 
+2021-01-15 15:40:16.702  INFO 22300 --- [   userThread-2] c.a.executor.api.service.UserService     : Get list of user by userThread-2 
+
 
 
 
